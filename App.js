@@ -1,6 +1,6 @@
 import React from 'react';
 import {ImageBackground, ScrollView, StyleSheet, Text, View} from 'react-native';
-import { NativeBaseProvider, Box } from "native-base";
+
 
 const image = require('./assets/cloudy.jpg');
 
@@ -25,7 +25,6 @@ const RoundedContainer = ()=>{
 }
 
 const App = () => (
-  <NativeBaseProvider>
   <View style={styles.all}>
     <ImageBackground source={image} resizeMode="cover" style={styles.backgroundImage}>
     <ScrollView style={{marginTop: 30}}>
@@ -33,7 +32,6 @@ const App = () => (
     </ScrollView>
     </ImageBackground>
   </View>
-  </NativeBaseProvider>
 );
 
 const styles = StyleSheet.create({
