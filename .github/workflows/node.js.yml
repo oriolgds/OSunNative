@@ -27,6 +27,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - name: EAS Login
+    - run: npx eas login
+      env:
+        EAS_USERNAME: ${{ secrets.EAS_USERNAME }}
+        EAS_PASSWORD: ${{ secrets.EAS_PASSWORD }}
     - run: npm i eas-cli -g
     - run: npm run build --if-present
     - run: eas build -p android
