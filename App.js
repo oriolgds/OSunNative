@@ -19,7 +19,7 @@ const roundedContainerStyles = StyleSheet.create({
 const RoundedContainer = ()=>{
   return (
     <View style={roundedContainerStyles.normal}>
-      <Text style={{fontSize: 200}}>20º</Text>
+      <Text style={{fontSize: 200, textAlign: 'center'}}>20º</Text>
     </View>
   )
 }
