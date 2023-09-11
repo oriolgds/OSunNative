@@ -4,6 +4,7 @@ import {ImageBackground, ScrollView, StyleSheet, Text, View} from 'react-native'
 
 const image = require('./assets/cloudy.jpg');
 
+
 const roundedContainerStyles = StyleSheet.create({
   normal: {
     flex: 1,
