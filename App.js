@@ -15,10 +15,10 @@ import { RoundedContainer } from "./bigNumber";
 const image = require("./assets/cloudy.jpg");
 
 const homeCardsData = [
-  { id: 1, textBold: "Humedad: ", textN: "90%" },
-  { id: 2, textBold: "Sensación termica: ", textN: "\n90%" },
-  { id: 3, textBold: "Humedad: ", textN: "90%" },
-  { id: 4, textBold: "Sensación termica: ", textN: "\n90%" },
+  { id: 1, textBold: "Humedad:", textN: "\n90%" },
+  { id: 2, textBold: "Sensación termica:", textN: "\n24º" },
+  { id: 3, textBold: "Viento:", textN: "\n8km/h | N" },
+  { id: 4, textBold: "Min/Max:", textN: "\n16º/30º" },
 ];
 export const homeCardsBuilder = ({ item }) => {
   return (
@@ -38,7 +38,7 @@ const App = () => {
     // Simulate an asynchronous action (e.g., fetching data)
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 1);
   }, []);
 
 
