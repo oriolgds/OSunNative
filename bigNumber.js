@@ -15,12 +15,13 @@ const roundedContainerStyles = StyleSheet.create({
     margin: 10,
     marginHorizontal: marginToMaxWidth(360),
     textAlign: "center",
+    padding: 10,
   },
 });
 export class RoundedContainer extends React.Component {
   render() {
     return (
-      <View style={roundedContainerStyles.normal}>{this.props.children}</View>
+      <View style={{...roundedContainerStyles.normal, ...this.props.style}}>{this.props.children}</View>
     );
   }
 }
