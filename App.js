@@ -9,9 +9,32 @@ import {
   Image,
   ActivityIndicator,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { RoundedContainer } from "./bigNumber";
+import { apiURL } from "./apiURL";
+// Metheo values
+export let jsonData = {};
+const CurrentTemp = () => {
+  const [textValue, setTextValue] = useState(jsonData.current_weather.temperature.toString());
+
+  // Function to update the text value
+  const updateTextValue = (val) => {
+    setTextValue(val);
+  };
+
+  return (
+    <RoundedContainer style={{ marginTop: 0, marginBottom: 10, paddingVertical: 40 }}>
+      <Text
+        style={{ fontSize: 130, textAlign: "center" }}
+      >
+        {textValue}º
+      </Text>
+    </RoundedContainer>
+  );
+};
+let current_humidity = "90%";
+let current_wind_speed = "8km/h";
 
 const image = require("./assets/cloudy.jpg");
 
@@ -23,8 +46,14 @@ const homeCardsData = [
 ];
 export const homeCardsBuilder = (item) => {
   return (
-    <TouchableOpacity key={item.id} style={{...styles.gridItem, marginTop: 5}} activeOpacity={0.6}>
-      <RoundedContainer style={{paddingHorizontal: 17, margin: 0, width: "100%"}}>
+    <TouchableOpacity
+      key={item.id}
+      style={{ ...styles.gridItem, marginTop: 5 }}
+      activeOpacity={0.6}
+    >
+      <RoundedContainer
+        style={{ paddingHorizontal: 17, margin: 0, width: "100%" }}
+      >
         <Text style={{ fontSize: 20 }}>
           <Text style={{ fontWeight: "bold" }}>{item.textBold} </Text>{" "}
           {item.textN}
@@ -37,11 +66,17 @@ export const homeCardsBuilder = (item) => {
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(async () => {
     // Simulate an asynchronous action (e.g., fetching data)
-    setTimeout(() => {
+    try {
+      const response = await fetch(apiURL);
+      const data = await response.json();
+      jsonData = data;
       setIsLoading(false);
-    }, 1);
+    } catch (e) {
+      setIsLoading(false);
+      throw new Error(e);
+    }
   }, []);
 
   if (isLoading) {
@@ -97,18 +132,11 @@ const App = () => {
           source={image}
           resizeMode="cover"
           style={styles.backgroundImage}
-        >
+        >          
           <ScrollView style={{ marginTop: 30 }}>
-            <RoundedContainer style={{}}>
-              <Text
-                testID="current-temp"
-                style={{ fontSize: 200, textAlign: "center" }}
-              >
-                21º
-              </Text>
-            </RoundedContainer>
-            <View style={{...styles.flexContainerRow, paddingHorizontal: 25}}>
-            {homeCardsData.map((item) => homeCardsBuilder(item))}
+          <CurrentTemp />
+            <View style={{ ...styles.flexContainerRow, paddingHorizontal: 25 }}>
+              {homeCardsData.map((item) => homeCardsBuilder(item))}
             </View>
           </ScrollView>
         </ImageBackground>
@@ -133,12 +161,12 @@ const styles = StyleSheet.create({
   flexContainerRow: {
     flex: 1,
     gap: 8,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   gridItem: {
-    width: (Dimensions.get('window').width / 2) - 40,    
+    width: Dimensions.get("window").width / 2 - 40,
     height: 120,
     borderWidth: 0,
     margin: 0,
