@@ -6,28 +6,31 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
   Image,
   ActivityIndicator,
+  TouchableOpacity,
+  Dimensions
 } from "react-native";
 import { RoundedContainer } from "./bigNumber";
 
 const image = require("./assets/cloudy.jpg");
 
 const homeCardsData = [
-  { id: 1, textBold: "Humedad:", textN: "\n90%" },
-  { id: 2, textBold: "Sensación termica:", textN: "\n24º" },
-  { id: 3, textBold: "Viento:", textN: "\n8km/h | N" },
-  { id: 4, textBold: "Min/Max:", textN: "\n16º/30º" },
+  { id: 1, textBold: "Humedad: ", textN: "\n90%" },
+  { id: 2, textBold: "Sensación termica: ", textN: "\n24º" },
+  { id: 3, textBold: "Viento: ", textN: "\n8km/h" },
+  { id: 4, textBold: "Min/Max: ", textN: "\n16º/30º" },
 ];
-export const homeCardsBuilder = ({ item }) => {
+export const homeCardsBuilder = (item) => {
   return (
-    <RoundedContainer style={{ margin: 20, paddingLeft: 17 }}>
-      <Text style={{ fontSize: 20 }}>
-        <Text style={{ fontWeight: "bold" }}>{item.textBold} </Text>{" "}
-        {item.textN}
-      </Text>
-    </RoundedContainer>
+    <TouchableOpacity key={item.id} style={{...styles.gridItem, marginTop: 5}} activeOpacity={0.6}>
+      <RoundedContainer style={{paddingHorizontal: 17, margin: 0, width: "100%"}}>
+        <Text style={{ fontSize: 20 }}>
+          <Text style={{ fontWeight: "bold" }}>{item.textBold} </Text>{" "}
+          {item.textN}
+        </Text>
+      </RoundedContainer>
+    </TouchableOpacity>
   );
 };
 
@@ -41,17 +44,52 @@ const App = () => {
     }, 1);
   }, []);
 
-
   if (isLoading) {
     return (
-    <View style= {{flex: 1, alignContent: 'center', justifyContent:'center', backgroundColor: '#f5e9d9'}}>
-      <Image source={require('./assets/iconchop.png')} style={{width: 250, height: 250, alignContent: 'center', justifyContent:'center', marginHorizontal: 20, alignSelf: 'center'}}/>
-      <Text style={{fontSize: 21, textAlign: 'center', fontWeight: 'bold', marginTop: 10}}>The forecast for devs by devs</Text>
-      <Text style={{fontSize: 16, textAlign: 'center', marginTop: 10, marginBottom: 8}}>With ♥️ from Viladecans</Text>
-      <ActivityIndicator size="large" color="#ffb379" />
-    </View>
+      <View
+        style={{
+          flex: 1,
+          alignContent: "center",
+          justifyContent: "center",
+          backgroundColor: "#f5e9d9",
+        }}
+      >
+        <Image
+          source={require("./assets/iconchop.png")}
+          style={{
+            width: 250,
+            height: 250,
+            alignContent: "center",
+            justifyContent: "center",
+            marginHorizontal: 20,
+            alignSelf: "center",
+          }}
+        />
+        <Text
+          style={{
+            fontSize: 21,
+            textAlign: "center",
+            fontWeight: "bold",
+            marginTop: 10,
+          }}
+        >
+          The forecast for devs by devs
+        </Text>
+        <Text
+          style={{
+            fontSize: 16,
+            textAlign: "center",
+            marginTop: 10,
+            marginBottom: 8,
+          }}
+        >
+          With ♥️ from Viladecans
+        </Text>
+        <ActivityIndicator size="large" color="#ffb379" />
+      </View>
     );
   } else {
+    // Main page
     return (
       <View style={styles.all}>
         <StatusBar backgroundColor="#fff"></StatusBar>
@@ -62,15 +100,16 @@ const App = () => {
         >
           <ScrollView style={{ marginTop: 30 }}>
             <RoundedContainer style={{}}>
-              <Text style={{ fontSize: 200, textAlign: "center" }}>21º</Text>
+              <Text
+                testID="current-temp"
+                style={{ fontSize: 200, textAlign: "center" }}
+              >
+                21º
+              </Text>
             </RoundedContainer>
-            <FlatList
-              data={homeCardsData}
-              renderItem={homeCardsBuilder}
-              keyExtractor={(item) => item.id.toString()}
-              numColumns={2}
-              style={{ columnGap: 100, rowGap: 20, gap: 10, flex: 1 }}
-            />
+            <View style={{...styles.flexContainerRow, paddingHorizontal: 25}}>
+            {homeCardsData.map((item) => homeCardsBuilder(item))}
+            </View>
           </ScrollView>
         </ImageBackground>
       </View>
@@ -86,6 +125,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  row: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  flexContainerRow: {
+    flex: 1,
+    gap: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  gridItem: {
+    width: (Dimensions.get('window').width / 2) - 40,    
+    height: 120,
+    borderWidth: 0,
+    margin: 0,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
