@@ -38,11 +38,11 @@ let current_wind_speed = "8km/h";
 
 const image = require("./assets/cloudy.jpg");
 
-const homeCardsData = [
-  { id: 1, textBold: "Humedad: ", textN: "\n90%" },
-  { id: 2, textBold: "Sensación termica: ", textN: "\n24º" },
-  { id: 3, textBold: "Viento: ", textN: "\n8km/h" },
-  { id: 4, textBold: "Min/Max: ", textN: "\n16º/30º" },
+let homeCardsData = [
+  { id: 1, textBold: "Humedad: ", textN: "\n---"},
+  { id: 2, textBold: "Sensación termica: ", textN: "\n---" },
+  { id: 3, textBold: "Viento: ", textN: "\n---" },
+  { id: 4, textBold: "Min/Max: ", textN: "\n---" },
 ];
 export const homeCardsBuilder = (item) => {
   return (
@@ -66,17 +66,26 @@ export const homeCardsBuilder = (item) => {
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(async () => {
+  useEffect(() => {
+    (async ()=>{
+      try {
+        const response = await fetch(apiURL);
+        const data = await response.json();
+        jsonData = data;
+        homeCardsData = [
+          { id: 1, textBold: "Humedad: ", textN: jsonData.hourly.relativehumidity_2m[0].toString()},
+          { id: 2, textBold: "Sensación termica: ", textN: "\n24º" },
+          { id: 3, textBold: "Viento: ", textN: "\n8km/h" },
+          { id: 4, textBold: "Min/Max: ", textN: "\n16º/30º" },
+        ]
+        setIsLoading(false);
+      } catch (e) {
+        setIsLoading(false);
+        throw new Error(e);
+      }
+    })();
     // Simulate an asynchronous action (e.g., fetching data)
-    try {
-      const response = await fetch(apiURL);
-      const data = await response.json();
-      jsonData = data;
-      setIsLoading(false);
-    } catch (e) {
-      setIsLoading(false);
-      throw new Error(e);
-    }
+    
   }, []);
 
   if (isLoading) {
