@@ -12,7 +12,8 @@ import {
   Dimensions,
 } from "react-native";
 import { RoundedContainer } from "./bigNumber";
-import { apiURL } from "./apiURL";
+import { apiURL, getLocation } from "./apiURL";
+import { MakeQuerablePromise } from "./querablePromise";
 // Metheo values
 export let jsonData = {};
 const CurrentTemp = () => {
@@ -28,7 +29,7 @@ const CurrentTemp = () => {
       <Text
         style={{ fontSize: 130, textAlign: "center" }}
       >
-        {textValue}º
+        {textValue}{jsonData.hourly_units.temperature_2m}
       </Text>
     </RoundedContainer>
   );
@@ -69,6 +70,7 @@ const App = () => {
   useEffect(() => {
     (async ()=>{
       try {
+        const locationPermision = await getLocation();
         const response = await fetch(apiURL);
         const data = await response.json();
         jsonData = data;
